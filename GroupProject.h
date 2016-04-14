@@ -21,13 +21,22 @@ private:
 	SplayNode *left, *right;
 public:
 	SplayNode();
-	
+
 	~SplayNode() {
 		left = NULL;
 		right = NULL;
 	}
-	SplayNode(int val);
-	SplayNode(int val, SplayNode* l, SplayNode* r);
+	SplayNode(int val)
+	{
+	    this->value = val;
+	    this->left = this->right = NULL;
+	}
+	SplayNode(int val, SplayNode* l, SplayNode* r)
+	{
+        this->value = val;
+        this->left = l;
+        this->right = r;
+	}
 
 	SplayNode* getRight() {
 		return right;
@@ -51,17 +60,11 @@ public:
 	//thing only opposite
 	/*
 	check right != null
-
 	swap data between right child and this(value at top)
-
 	save this->right as temp and modify this->right to equal temp-> right
-
 	now save this->left as temp2
-
 	set this->left to temp
-
 	set temp->right to temp ->left
-
 	set temp->left to temp2
 	*/
 	void RRotation(SplayNode* top);
@@ -89,7 +92,7 @@ public:
 	//double rotation, keep in mind our rotates don't change the
 	//address location of parents so it should be fine recursively)
 	void MoveToTop(SplayNode *ptr, SplayNode* target);
-	
+
 
 	//basically a combination of findValue and movetotop with a short part where
 	//you use the "new" operand
