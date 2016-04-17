@@ -14,6 +14,11 @@ GroupProject::GroupProject(GLUT_Plotter* g){
 	this->g = g;
 }
 
+GroupProject::GroupProject()
+{
+	//end game
+}
+
 
 //GroupProject Main Game Loop
 void GroupProject::Play(void){
