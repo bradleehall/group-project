@@ -32,29 +32,38 @@ void GroupProject::Play(void){
 		              break;
 		}
 	}
-	
+
 	/**How the user can choose different commands**/
-	/*
-	while(k=g->getkey()){
+
+	while(k=g->getKey()){
 		if(k = 'i'){
-			//use insert function 
-				//Need to use:  AddValue();
+			//use insert function
+            //Need to use:  AddValue();
+            int valinsert = 0;
+            cout << "What would you like to insert? ";
+            cin >> valinsert;
 		}
 		else if(k = 'r'){
 			//use remove function
-				//Need to use: RemoveValue();
+            //Need to use: RemoveValue();
+            int valremove = 0;
+            cout << "What would you like to remove? ";
+            cin >> valremove;
 		}
 		else if(k = 'a'){
 			//access that number
-				//Need to use: FindValue(**ptr)
-				//	       MoveToTop(SplayNode *ptr, SplayNode* target);
+            //Need to use: FindValue(**ptr)
+            //	       MoveToTop(SplayNode *ptr, SplayNode* target);
+            int valaccess = 0;
+            cout << "What would you like to access? ";
+            cin >> valaccess;
 		}
 		else{
 			//quit
 			break;
 		}
 	}
-	*/
+
 
 	//Check for mouse click
 	while(g->click()){
