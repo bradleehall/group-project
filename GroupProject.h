@@ -267,13 +267,6 @@ public:
 	//constructor
 	GroupProject(GLUT_Plotter* g);
 
-	//gets depth of tree
-	int getDepth();
-
-	//calculates depth of tree...it might be better to implement this in
-	//Splay Tree
-	int CalculateDepth();
-
 	//Unless I'm forgetting something, the rest can be GUI
 	//we haven't decided how the gui will work, but since we have
 	//mouse capabilities, it might be cool to implement a system
