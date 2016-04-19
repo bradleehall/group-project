@@ -267,6 +267,9 @@ public:
 	//constructor
 	GroupProject(GLUT_Plotter* g);
 
+	//destructor
+	~GroupProject();
+
 	//Unless I'm forgetting something, the rest can be GUI
 	//we haven't decided how the gui will work, but since we have
 	//mouse capabilities, it might be cool to implement a system
