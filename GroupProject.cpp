@@ -71,7 +71,7 @@ void GroupProject::Play(void)
 	}
 
 	// Update screen - draw game
-	g->display();
+	g->Draw();
 }
 
 //everything from here on is WIP--let Michael know if you edit it
