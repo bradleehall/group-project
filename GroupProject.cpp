@@ -173,16 +173,3 @@ void drawNode(SplayNode<int> *t_root, float x1, float y1, int level)
         draw_line(x1, y1, x2, y2);
     }
 }
-
-void display()
-{
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-    glTranslatef(0, 10, -30);
-    glColor3f(1, 1, 1);
-
-    drawNode(g->root, 0, 0, 0);
-
-    glutSwapBuffers();
-}
