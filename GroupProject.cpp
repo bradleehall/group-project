@@ -8,7 +8,7 @@
 
 #include "GroupProject.h"
 #include <cmath>
-#include <string>
+#include <cstdio>
 
 //GroupProject Constructor
 
@@ -149,7 +149,8 @@ void drawNode(SplayNode<int> *t_root, float x1, float y1, int level)
 
     char buff[5];
     //note: itoa() is a C function, need to figure out a way to do this in C++
-    itoa(t_root->getVal(), buff, 10);
+    //itoa(t_root->getVal(), buff, 10);
+    snprintf(buff, sizeof(buff), "%d", t_root->getVal());
     draw_text(buff, x1, y1);
 
     if(t_root->getLeft())
