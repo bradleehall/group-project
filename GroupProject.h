@@ -256,13 +256,32 @@ public:
 
 	//as of now I don't see anything else to add here except maybe a
 	//printpreorder but if it's not required, this is where I'd like us to focus
+
+	//graphical functions
+
+    void display()
+    {
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glTranslatef(0, 10, -30);
+        glColor3f(1, 1, 1);
+
+        drawNode(this->root, 0, 0, 0);
+
+        glutSwapBuffers();
+    }
 };
 
 
 class GroupProject {
 private:
 	GLUT_Plotter *g;
+
+	//do we need this?
 	int depth; //for spacing
+
+	SplayTree<int> graphicaltree;
 public:
 	//constructor
 	GroupProject(GLUT_Plotter* g);
