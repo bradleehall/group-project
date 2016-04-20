@@ -7,8 +7,10 @@
  */
 
 #include "GroupProject.h"
+#include "GLUT.h"
 #include <cmath>
-#include <cstdio>
+#include <cstdlib>
+
 
 //GroupProject Constructor
 
@@ -24,54 +26,58 @@ GroupProject::~GroupProject()
 
 
 //GroupProject Main Game Loop
-void GroupProject::Play(void)
-{
-
+void GroupProject::Play(void){
+    /*int k;
 	//Check for Keyboard Hit
-	while(g->kbhit())
-    {
-        //yes it is necessary to initialize these here, see error:
-        //jump to case label.
-        int valinsert = 0, valremove = 0, valaccess = 0;
-
-		int k = g->getKey();	//change int to char***
-		switch (k)
-		{
-        case 73:
-			//use insert function
-            //Need to use:  AddValue();
-            cout << "What would you like to insert? ";
-            cin >> valinsert;
-            break;
-        case 82:
-			//use remove function
-            //Need to use: RemoveValue();
-            cout << "What would you like to remove? ";
-            cin >> valremove;
-            break;
-        case 65:
-			//access that number
-            //Need to use: FindValue(**ptr)
-            //	       MoveToTop(SplayNode *ptr, SplayNode* target);
-            cout << "What would you like to access? ";
-            cin >> valaccess;
-            break;
-        case 27:
-            exit(1); //ESC key
-            break;
+	while(g->kbhit()){
+		k = g->getKey();	//change int to char***
+		switch (k){
+		     case 27: exit(1); //ESC key
+		              break;
 		}
 	}
 
+	/**How the user can choose different commands**/
+
+	/*while(k = g->getKey()){
+		if(k = 'i'){
+			//use insert function
+            //Need to use:  AddValue();
+            int valinsert = 0;
+            cout << "What would you like to insert? ";
+            cin >> valinsert;
+		}
+		else if(k == 'r'){
+			//use remove function
+            //Need to use: RemoveValue();
+            int valremove = 0;
+            cout << "What would you like to remove? ";
+            cin >> valremove;
+		}
+		else if(k == 'a'){
+			//access that number
+            //Need to use: FindValue(**ptr)
+            //	       MoveToTop(SplayNode *ptr, SplayNode* target);
+            int valaccess = 0;
+            cout << "What would you like to access? ";
+            cin >> valaccess;
+		}
+		else{
+			//quit
+			break;
+		}
+	}
+
+
 	//Check for mouse click
-	while(g->click())
-    {
+	while(g->click()){
 
 		Click c;
 		c = g->getClick();
 	}
 
 	// Update screen - draw game
-	g->Draw();
+	g->Draw();*/
 }
 
 //everything from here on is WIP--let Michael know if you edit it
@@ -98,7 +104,6 @@ void drawCircle(float segments, float radius, float sx, float sy)
         }
         else
         {
-            //this line was commented out in the original code, not sure why
             //glVertex2f(cache_x,cache_y);
             glVertex2f(x + sx, y + sy);
             cache_x = x+sx;
@@ -148,9 +153,7 @@ void drawNode(SplayNode<int> *t_root, float x1, float y1, int level)
     drawCircle(segments, radius, x1, y1);
 
     char buff[5];
-    //note: itoa() is a C function, need to figure out a way to do this in C++
-    //itoa(t_root->getVal(), buff, 10);
-    snprintf(buff, sizeof(buff), "%d", t_root->getVal());
+    itoa(t_root->getVal(), buff, 10);
     draw_text(buff, x1, y1);
 
     if(t_root->getLeft())
@@ -173,4 +176,46 @@ void drawNode(SplayNode<int> *t_root, float x1, float y1, int level)
         drawNode(t_root->getRight(), x2, y2, level+1);
         draw_line(x1, y1, x2, y2);
     }
+}
+
+//The projection scale
+GLfloat gProjectionScale = 1.f;
+
+bool initGL()
+{
+    //Initialize Projection Matrix
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    glOrtho( 0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, 1.0, -1.0 );
+
+    //Initialize Modelview Matrix
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+
+    //Initialize clear color
+    glClearColor( 0.f, 0.f, 0.f, 1.f );
+
+    //Check for error
+    GLenum error = glGetError();
+    if( error != GL_NO_ERROR )
+    {
+        printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+        return false;
+    }
+
+    return true;
+}
+
+void update()
+{
+
+}
+
+void render()
+{
+    //Clear color buffer
+    glClear( GL_COLOR_BUFFER_BIT );
+
+    //Update screen
+    glutSwapBuffers();
 }
