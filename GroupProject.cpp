@@ -8,7 +8,7 @@
 
 #include "GroupProject.h"
 #include <cmath>
-#include <cstdlib>
+#include <string>
 
 //GroupProject Constructor
 
@@ -24,51 +24,47 @@ GroupProject::~GroupProject()
 
 
 //GroupProject Main Game Loop
-void GroupProject::Play(void){
+void GroupProject::Play(void)
+{
 
 	//Check for Keyboard Hit
-	while(g->kbhit()){
+	while(g->kbhit())
+    {
+        //yes it is necessary to initialize these here, see error:
+        //jump to case label.
+        int valinsert = 0, valremove = 0, valaccess = 0;
+
 		int k = g->getKey();	//change int to char***
-		switch (k){
-		     case 27: exit(1); //ESC key
-		              break;
-		}
-	}
-
-	/**How the user can choose different commands**/
-
-	while(k=g->getKey()){
-		if(k = 'i'){
+		switch (k)
+		{
+        case 73:
 			//use insert function
             //Need to use:  AddValue();
-            int valinsert = 0;
             cout << "What would you like to insert? ";
             cin >> valinsert;
-		}
-		else if(k = 'r'){
+            break;
+        case 82:
 			//use remove function
             //Need to use: RemoveValue();
-            int valremove = 0;
             cout << "What would you like to remove? ";
             cin >> valremove;
-		}
-		else if(k = 'a'){
+            break;
+        case 65:
 			//access that number
             //Need to use: FindValue(**ptr)
             //	       MoveToTop(SplayNode *ptr, SplayNode* target);
-            int valaccess = 0;
             cout << "What would you like to access? ";
             cin >> valaccess;
-		}
-		else{
-			//quit
-			break;
+            break;
+        case 27:
+            exit(1); //ESC key
+            break;
 		}
 	}
 
-
 	//Check for mouse click
-	while(g->click()){
+	while(g->click())
+    {
 
 		Click c;
 		c = g->getClick();
@@ -102,6 +98,7 @@ void drawCircle(float segments, float radius, float sx, float sy)
         }
         else
         {
+            //this line was commented out in the original code, not sure why
             //glVertex2f(cache_x,cache_y);
             glVertex2f(x + sx, y + sy);
             cache_x = x+sx;
@@ -151,6 +148,7 @@ void drawNode(SplayNode<int> *t_root, float x1, float y1, int level)
     drawCircle(segments, radius, x1, y1);
 
     char buff[5];
+    //note: itoa() is a C function, need to figure out a way to do this in C++
     itoa(t_root->getVal(), buff, 10);
     draw_text(buff, x1, y1);
 
@@ -184,7 +182,7 @@ void display()
     glTranslatef(0, 10, -30);
     glColor3f(1, 1, 1);
 
-    drawNode(root, 0, 0, 0);
+    drawNode(g->root, 0, 0, 0);
 
     glutSwapBuffers();
 }
