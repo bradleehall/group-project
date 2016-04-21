@@ -553,11 +553,9 @@ void reshape (int w, int h)
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 27:
-            glutDestroyWindow(Win.id);
-            exit 0;
+            exit (0);
             break;
     }
-    glutPostRedisplay();
 }
 
 int main (int argc, char **argv)
