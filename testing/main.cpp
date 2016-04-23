@@ -305,6 +305,7 @@ string userinput()
         << "access z: modify the tree as if the node containing z had been"
         << "accessed, but do not do anything else" << endl
         << "display: display a graphical representation of the tree" << endl
+        << "print: display a text representation of the tree" << endl
         << "help: display this help" << endl
         << "exit: exit the program" << endl;
     }
