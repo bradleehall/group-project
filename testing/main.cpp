@@ -93,6 +93,7 @@ SplayNode<Base>* left_rotate(SplayNode<Base> *target)
 template <class Base>
 SplayNode<Base>* access(const Base &accessval, SplayNode<Base> *target)
 {
+    cout << "Accessing " << target << endl;
     if(!(target))
     {
         return NULL;
@@ -154,6 +155,13 @@ SplayNode<Base>* access(const Base &accessval, SplayNode<Base> *target)
 }
 
 template <class Base>
+SplayNode<Base>* insert(const Base &valinsert)
+{
+    root = insert(valinsert, root);
+    return access(valinsert, root);
+}
+
+template <class Base>
 SplayNode<Base>* insert(const Base &valinsert, SplayNode<Base> *target)
 {
     if(!target)
@@ -173,7 +181,6 @@ SplayNode<Base>* insert(const Base &valinsert, SplayNode<Base> *target)
             else
             {
                 temp->left = createnode(valinsert);
-                access(valinsert, temp->left);
                 return target;
             }
         }
@@ -186,7 +193,6 @@ SplayNode<Base>* insert(const Base &valinsert, SplayNode<Base> *target)
             else
             {
                 temp->right = createnode(valinsert);
-                access(valinsert, temp->right);
                 return target;
             }
         }
@@ -238,7 +244,7 @@ void reverse(char *target, int length)
     int init = 0;
     while (init < finish)
     {
-        swap(*(target+init), *(target+finish));
+        swap(*(target + init), *(target + finish));
         init++;
         finish--;
     }
@@ -263,8 +269,8 @@ char* itoa(int num, char *target, int radix)
     while(num)
     {
         int temp = num % radix;
-        target[ticker++] = (temp > 9)? (temp-10) + 'a' : temp + '0';
-        num = num/radix;
+        target[ticker++] = (temp > 9) ? (temp-10) + 'a' : temp + '0';
+        num = num / radix;
     }
     if (neg)
     {
@@ -275,61 +281,10 @@ char* itoa(int num, char *target, int radix)
     return target;
 }
 
-//replace this with insert()
-/*
-void add_node(TREENODE** t_root, TREENODE** current) {
-    if(*t_root==NULL) {
-        *t_root = *current;
-        return;
-    }
-    if((*current)->data < (*t_root)->data) {
-        if((*t_root)->left==NULL) {
-            (*t_root)->left = (*current);
-        }
-        else {
-            add_node(&((*t_root)->left),current);
-        }
-    }
-    else {
-        if((*t_root)->right==NULL) {
-            (*t_root)->right = *current;
-        }
-        else {
-            add_node(&((*t_root)->right),current);
-        }
-    }
-}
-*/
-
-//retaining this function in case I screw something up
-/*
-void accept_tree(){
-    int n;
-    cout << "\nCREATING BST: (enter 0 to finish)\n";
-    while(1) {
-        fflush(stdin);
-        cout<<"\nEnter node value: ";
-        cin>>n;
-        if(!n)
-        {
-            break;
-        }
-        TREENODE* current = new TREENODE;
-        current->data = n;
-        current->right = NULL;
-        current->left = NULL;
-        current->parent = NULL;
-        add_node(&root,&current);
-    }
-}
-*/
-
 template <class Base>
 string userinput()
 {
     cout << endl << "What would you like to do? ";
-    //fflush(stdin);
-    //cin.clear();
     string userstring, usercommand;
     Base userargument;
     do
@@ -342,7 +297,6 @@ string userinput()
     if(usercommand == "exit")
     {
         cout << "Exiting..." << endl;
-        return "exit";
     }
     else if(usercommand == "help")
     {
@@ -362,9 +316,8 @@ string userinput()
             cin >> userargument;
         }
         cout << "Inserting " << userargument << "...";
-        root = insert(userargument, root);
+        root = insert(userargument);
         cout << "done." << endl;
-        return "insert";
     }
     else if(usercommand == "remove")
     {
@@ -376,7 +329,6 @@ string userinput()
         cout << "Removing " << userargument << "...";
         root = remove(userargument, root);
         cout << "done." << endl;
-        return "remove";
     }
     else if(usercommand == "access")
     {
@@ -388,7 +340,6 @@ string userinput()
         cout << "Accessing " << userargument << "...";
         root = access(userargument, root);
         cout << "done." << endl;
-        return "access";
     }
     else if(usercommand == "print")
     {
@@ -424,16 +375,16 @@ string userinput()
     else if(usercommand == "display")
     {
         cout << "Displaying tree..." << endl;
-        return "display";
     }
     else
     {
         cout << "error: unknown command " << usercommand << endl
         << "Type 'help' for a list of commands." << endl;
     }
+    return usercommand;
 }
 
-void drawCircle(float segments, float radius, float sx, float sy)
+void circle_graphic(float segments, float radius, float sx, float sy)
 {
     float theta = 2 * 3.1415926 / segments;
     float tan_factor = tanf(theta);
@@ -469,15 +420,15 @@ void drawCircle(float segments, float radius, float sx, float sy)
     glEnd();
 }
 
-void draw_line(float x1, float y1, float x2, float y2)
+void line_graphic(float x1, float y1, float x2, float y2)
 {
     glBegin(GL_LINES);
-    glVertex2f(x1,y1);
-    glVertex2f(x2,y2);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
     glEnd();
 }
 
-void draw_text(char* text, float x, float y)
+void text_graphic(char* text, float x, float y)
 {
     GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
     glRasterPos3f(x, y, 0);
@@ -485,12 +436,13 @@ void draw_text(char* text, float x, float y)
     {
         glutBitmapCharacter(font_style, text[i]);
     }
+    return;
 }
 
 template <class Base>
-void drawNode(SplayNode<Base> *t_root, float x1, float y1, int level)
+void node_graphic(SplayNode<Base> *target, float x1, float y1, int level)
 {
-    if (!t_root)
+    if (!target)
     {
         return;
     }
@@ -500,58 +452,56 @@ void drawNode(SplayNode<Base> *t_root, float x1, float y1, int level)
     float right_angle = 115;
     float branch_length = 12 - level*2.5;
     float angle_change = 20;
-    // Draw the current circle
-    drawCircle(segments,radius,x1,y1);
+    circle_graphic(segments, radius, x1, y1);
     char buff[5];
-    itoa(t_root->value,buff,10);
-    draw_text(buff,x1,y1);
-    if(t_root->left)
+    itoa(target->value, buff, 10);
+    text_graphic(buff, x1, y1);
+    if(target->left)
     {
-        // Draw the Left circle
-        float angle = left_angle - level*angle_change;
-        double radian = angle*3.14/180;
+        float angle = left_angle - level * angle_change;
+        double radian = angle * 3.14 / 180;
         float m = (double)tan((double)radian);
         float x2 = x1 + branch_length * sin((double) radian);
         float y2 = y1 + branch_length * cos((double) radian);
-        draw_line(x1,y1,x2,y2);
-        drawNode(t_root->left,x2,y2,level+1);
+        line_graphic(x1, y1, x2, y2);
+        node_graphic(target->left, x2, y2, level + 1);
     }
-    if(t_root->right)
+    if(target->right)
     {
-        // Draw the Right circle
         float angle = right_angle + level*angle_change;
-        float radian = angle*3.14/180;
+        float radian = angle * 3.14 / 180;
         float m = (double)tan((double)radian);
         float x2 = x1 + branch_length * sin((double) radian);
         float y2 = y1 + branch_length * cos((double) radian);
-        draw_line(x1,y1,x2,y2);
-        drawNode(t_root->right,x2,y2,level+1);
+        line_graphic(x1, y1, x2, y2);
+        node_graphic(target->right, x2, y2, level+1);
     }
 }
 
 
 void display()
 {
-    glClearColor (0.0,0.0,0.0,1.0);
+    glClearColor (0.0, 0.0, 0.0, 1.0);
     glClear (GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     glTranslatef(0,10,-30);
     glColor3f(1,1,1);
-    drawNode(root,0,0,0);
+    node_graphic(root,0,0,0);
     glutSwapBuffers();
 }
 
-void reshape (int w, int h)
+void redraw(int width, int height)
 {
-    glViewport (0, 0, (GLsizei)w, (GLsizei)h);
+    glViewport (0, 0, (GLsizei)width, (GLsizei)height);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective (60, (GLfloat)w / (GLfloat)h, 0.1, 100.0);
+    gluPerspective (60, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
     glMatrixMode (GL_MODELVIEW);
 }
 
-void keyboard(unsigned char key, int x, int y) {
-    switch (key) {
+void keychecker(unsigned char key, int x, int y) {
+    switch (key)
+    {
         case 27:
             exit (0);
             break;
@@ -566,18 +516,15 @@ int main (int argc, char **argv)
         userresult = userinput<int>();
         if(userresult == "display")
         {
-            inorder(root);
-            // OPENGL Drawing functions
             glutInit (&argc, argv);
             glutInitDisplayMode (GLUT_DOUBLE);
             glutInitWindowSize (1200, 800);
             glutInitWindowPosition (0, 0);
             glutCreateWindow ("Visualization");
-            // Register function pointers to the drawing framework
             glutDisplayFunc (display);
             glutIdleFunc (display);
-            glutReshapeFunc (reshape);
-            glutKeyboardFunc (keyboard);
+            glutReshapeFunc (redraw);
+            glutKeyboardFunc (keychecker);
             glutMainLoop ();
         }
     }
